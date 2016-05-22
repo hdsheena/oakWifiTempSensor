@@ -10,7 +10,7 @@
 DHT dht(DHTPIN, DHTTYPE);
 float t;
 float h;
-float prevtemp;
+float prevtemp = 0;
 float deltatemp;
 char data[8];
 char type[8];
@@ -28,8 +28,11 @@ void setup() {
   // initialize the digital pin as an output.
   pinMode(0, OUTPUT); //LED on Model B
   pinMode(1, OUTPUT); //LED on Model A   
+  delay(60000);
+float t = dht.readTemperature();
+ temp = float_to_str(t);
 
-
+Particle.publish("pushbullet", temp, 60, PRIVATE);
 }
 
 // the loop routine runs over and over again forever:
@@ -66,6 +69,7 @@ if (deltatemp > 0 || t > 25) {
   //prevStr[8] = float_to_str(prevtemp);
 //pushbullet_publish(temp);
 Particle.publish("pushbullet", temp, 60, PRIVATE);
+delay(30000);
 //particle_publish(temp, "temp");
 }
 
